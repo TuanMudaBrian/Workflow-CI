@@ -66,6 +66,7 @@ jobs:
           ")
           echo "RUN_ID=$RUN_ID" >> $GITHUB_ENV
           echo "Latest Run ID: $RUN_ID"
+          echo "$RUN_ID" > MLProject/run_id.txt
 
       # ── 6. Simpan artefak mlruns ke GitHub ───────────────────
       - name: Commit mlruns artifacts to GitHub
@@ -75,7 +76,7 @@ jobs:
           git add MLProject/mlruns/
           git add MLProject/run_id.txt
           git diff --staged --quiet \
-            || git commit -m "ci: update model artifacts [skip ci]"
+          git commit -m "ci: update model artifacts [skip ci]" || echo "No changes to commit"
           git push
 
       # ── 7. Login ke Docker Hub ───────────────────────────────
