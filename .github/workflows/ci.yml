@@ -47,7 +47,7 @@ jobs:
           cd MLProject
           mlflow run . \
             --env-manager=local \
-            --experiment-name "Telco_Churn_CI"
+            --experiment-name "Telco_Churn_Classification"
 
       # ── 5. Ambil Run ID terbaru ───────────────────────────────
       - name: Get latest Run ID
