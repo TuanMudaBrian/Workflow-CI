@@ -79,14 +79,18 @@ jobs:
           git commit -m "ci: update model artifacts [skip ci]" || echo "No changes to commit"
           git push
 
-      # ── 7. Login ke Docker Hub ───────────────────────────────
+      # ── 7. Setup Docker Buildx (TAMBAHKAN INI) ────────────────
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      # ── 8. Login ke Docker Hub ───────────────────────────────
       - name: Login to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      # ── 8. Build Docker image dengan mlflow build-docker ─────
+      # ── 9. Build Docker image dengan mlflow build-docker ─────
       - name: Build Docker image using mlflow build-docker
         run: |
           cd MLProject
@@ -100,14 +104,14 @@ jobs:
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
           echo "Build selesai: $IMAGE_NAME"
 
-      # ── 9. Push Docker image ke Docker Hub ───────────────────
+      # ── 10. Push Docker image ke Docker Hub ───────────────────
       - name: Push Docker image to Docker Hub
         run: |
           docker push "${{ env.IMAGE_NAME }}:latest"
           echo "Docker image berhasil dipush:"
           echo "  https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model"
 
-      # ── 10. Update docker_image_link.txt & commit ────────────
+      # ── 11. Update docker_image_link.txt & commit ────────────
       - name: Update docker_image_link.txt
         run: |
           echo "https://hub.docker.com/r/${{ secrets.DOCKERHUB_USERNAME }}/telco-churn-model" \
