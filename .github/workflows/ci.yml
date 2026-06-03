@@ -55,7 +55,7 @@ jobs:
           RUN_ID=$(cd MLProject && python3 -c "
           import mlflow
           client = mlflow.tracking.MlflowClient()
-          exp = client.get_experiment_by_name('Telco_Churn_CI')
+          exp = client.get_experiment_by_name('Telco_Churn_Classification')
           if exp is None:
               raise ValueError('Experiment tidak ditemukan')
           runs = client.search_runs(
